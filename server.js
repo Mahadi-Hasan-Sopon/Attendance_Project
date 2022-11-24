@@ -3,6 +3,7 @@ const connectDB = require("./db");
 const User = require("./models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const authenticate = require("./middleware/authenticate");
 
 const app = express();
 
@@ -86,33 +87,12 @@ app.get("/public", (req, res) => {
 });
 
 
- app.get("/private", async (req, res) => {
-  //Json web Token comes with 'req.headers.authorization' property
-     let token = req.headers.authorization;
-
-  if (!token) {
-    return res.json({ message: "You are not authorized to enter in this route" });
-    }
-
-    try {
-        token = token.split(' ')[1];
-         //console.log(token)
-        const verifiedToken = jwt.verify(token, "secret-key")
-        const user = await User.findById(verifiedToken._id); 
-        // console.log(user)
-
-        if (!user) {
-             return res.json({
-               message: "You are not authorized to enter in this route",
-             });
-        }
-        return res.status(200).json({
-           message: "I am a private route with authorization",
-        });
-     }catch (error) {
-         console.log(error);
-         res.status(400).json({message: "Unauthorized"})
-     }
+app.get("/private", authenticate, (req, res) => {
+     //Since we added user (req.user) property in authenticate function we can call this prop now
+    console.log("I am the User ===> ", req.user)
+     return res.status(200).json({
+       message: "I am a private route with authorization",
+     });
 });
 
 
