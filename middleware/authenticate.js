@@ -26,6 +26,7 @@ async function authenticate(req, res, next) {
         }
         //req object is a mutable object, we can add properties in this and assign a value to it
         req.user = user;
+        next();
         
      }catch (error) {
          console.log(error);
