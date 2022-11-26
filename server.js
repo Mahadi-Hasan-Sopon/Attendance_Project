@@ -6,7 +6,7 @@ const authenticate = require("./middleware/authenticate");
 
 const app = express();
 
-app.use(express.json(), express.urlencoded({ extended: true }));
+app.use(express.json());
 app.use(routes);
 
 app.get("/health", (req, res) => {
@@ -15,7 +15,7 @@ app.get("/health", (req, res) => {
 
 app.get("/", (req, res) => {
   res.send(
-    "<h1>Hello World</h1> <p>To check site health goto /health route</p>"
+    "<h1>Hello World</h1> <p> To check site health goto / health route</p > "
   );
 });
 
@@ -30,7 +30,7 @@ app.get("/public", (req, res) => {
 
 app.get("/private", authenticate, (req, res) => {
      //Since we added user (req.user) property in authenticate function we can call this prop now
-    console.log("I am the User ===> ", req.user)
+    console.log("I am the User: ", req.user)
      return res.status(200).json({
        message: "I am a private route with authorization",
      });
