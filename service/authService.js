@@ -30,9 +30,17 @@ const loginService = async ({ email, password }) => {
   //   error.status = 400;
   //   return error;
   // }
-  if(!isMatched) throw error("Invalid Credential", 400)
+  if (!isMatched) throw error("Invalid Credential", 400)
+  
+  const payload = {
+    _id: user._id,
+    name: user.name,
+    email: user.email,
+    roles: user.roles,
+    accountStatus: user.accountStatus
+  };
 
-  return jwt.sign(user._doc, "secret-key", { expiresIn: "2h" });
+  return jwt.sign(payload, "secret-key", { expiresIn: "2h" });
 };
 
 module.exports = {
