@@ -4,8 +4,7 @@ const { findUserByProperty, createNewUser } = require("./userService");
 const error = require('../utils/error')
 
 const registerService = async ({ name, email, password }) => {
-  //User.findOne({email: email})
-
+ 
   let user = await findUserByProperty("email", email);
   if (user) throw error("User already exits", 400);
   
@@ -17,19 +16,11 @@ const registerService = async ({ name, email, password }) => {
 const loginService = async ({ email, password }) => {
   //const user = await User.findOne({ email });
   const user = await findUserByProperty("email", email);
-  // if (!user) {
-  //   const error = new Error("Invalid Username", 400);
-  //   error.status = 400;
-  //   return error;
-  // }
+  
   if (!user) throw error("Invalid Username", 400)
   
   const isMatched = await bcrypt.compare(password, user.password);
-  // if (!isMatched) {
-  //   const error = new Error("Invalid Credential");
-  //   error.status = 400;
-  //   return error;
-  // }
+  
   if (!isMatched) throw error("Invalid Credential", 400)
   
   const payload = {
