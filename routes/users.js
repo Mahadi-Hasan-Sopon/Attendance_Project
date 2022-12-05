@@ -30,12 +30,27 @@ router.patch("/:userId", userController.patchUserById);
  * @method GET
  * @visibility Private
  */
+
+/**
+ * Delete user by ID
+ * @method delete
+ * @return null
+ */
+router.delete('/:userId', userController.deleteUserById)
+
+/***
+ * Get all user
+ * @method GET
+ * @return users
+ */
 router.get("/", userController.getUsers);
 
 /**
  * Create a new user
  * @method POST
  */
-router.post("/", () => {});
+router.post("/", userController.postUser);
+
+
 
 module.exports = router;
