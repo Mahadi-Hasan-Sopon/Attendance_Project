@@ -46,7 +46,17 @@ const postUser = async (req, res, next) => {
   }
 };
 
-const putUserById = (req, res, next) => {};
+const putUserById = async (req, res, next) => {
+  const { userId } = req.params;
+  const { name, roles, accountStatus, email } = req.body;
+  try {
+    const user = await userService.updateUserByPut(userId, { name, roles, accountStatus, email });
+    if (!user) throw error("User not Found", 404);
+    return res.status(200).json(user);
+  } catch (error) {
+    next(error)
+  }
+};
 
 const patchUserById = async (req, res, next) => {
   const { name, roles, accountStatus } = req.body;
